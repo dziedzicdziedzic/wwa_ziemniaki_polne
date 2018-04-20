@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
-import SearchField  from './components/SearchField'
+import SearchField  from './components/SearchField';
+import ListOfSearchedItems from './components/ListOfSearchedItems'
 import {BarCodeScanner} from 'expo';
 
 export default class App extends React.Component {
@@ -8,6 +9,7 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
           <SearchField/>
+          <ListOfSearchedItems/>
       </View>
     );
   }
