@@ -1,17 +1,21 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
+import SearchField  from './components/SearchField'
+import {BarCodeScanner} from 'expo';
 
 export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
+          <SearchField/>
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
+
+
+var styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
