@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
+import Requests from '../services/Requests';
 class SearchField extends React.Component {
     state = {
         searchedPhrase:" ",
@@ -13,10 +14,9 @@ class SearchField extends React.Component {
         );
     }
     searchPhrase = ()=> {
-        this.setState({
-            searchedPhrase: 'lol'
-        });
+        Requests.searchRequest(this.state.searchedPhrase);
     }
+
 
 }
 export default SearchField;
