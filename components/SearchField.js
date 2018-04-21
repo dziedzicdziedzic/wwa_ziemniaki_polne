@@ -18,7 +18,7 @@ export default class SearchField extends React.Component {
         );
     }
     searchPhrase = () => {
-        Requests.searchRequest(this.state.searchedPhrase);
+        Requests.searchAllegroRequest(this.state.searchedPhrase);
     }
 
 
