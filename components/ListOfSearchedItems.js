@@ -34,6 +34,7 @@ export default class ListOfSearchedItems extends React.Component {
                    data={this.state.itemDatabase}
                    renderItem={this.renderItem}
                    keyExtractor={this.getItemKey}
+                   onEndReached={}
                />
            )
     }
