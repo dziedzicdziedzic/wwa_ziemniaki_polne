@@ -26,7 +26,7 @@ class Requests {
     }
 
 
-    searchRequest(text){
+    searchAllegroRequest(text){
         var config = {
             headers: {
                 'Api-Key': Config.api_key(),
@@ -34,17 +34,24 @@ class Requests {
                 'Accept': Config.accept(),
             }
         };
-        console.log('https://allegroapi.io/offers?phrase='+text+'&sort=+price&country.code=PL&limit='+this.pageLimit);
+        //console.log('https://allegroapi.io/offers?phrase='+text+'&sort=+price&country.code=PL&limit='+this.pageLimit);
         axios.get('https://allegroapi.io/offers?phrase='+text+'&sort=+price&country.code=PL&limit='+this.pageLimit, config)
             .then((response) => {
             this.setPageToken(response.data.pageToken.next);
-            console.log(response.data.pageToken.next);
+            console.log(response.data);
             //ListOfSearchedItems.Change(response.data.offers);
-
             PubSub.publish("RESPONSE",JSON.stringify(response.data.offers));
-
-
         });
+    }
+
+    searchISBNRequest(text){
+        //console.log('https://www.googleapis.com/books/v1/volumes?q=isbn' +text);
+        axios.get('https://www.googleapis.com/books/v1/volumes?q=isbn' + text)
+            .then((response) =>{
+                console.log(response.data);
+                console.log(response.data.items[0].volumeInfo.title);
+            this.searchAllegroRequest(response.data.items[0].volumeInfo.title);
+        })
     }
 
 
@@ -56,13 +63,11 @@ class Requests {
                 'Accept': Config.accept(),
             }
         };
-        console.log('https://allegroapi.io/offers?phrase='+text+'&sort=+price&country.code=PL&limit='+this.pageLimit+this.getPageToken());
+        //console.log('https://allegroapi.io/offers?phrase='+text+'&sort=+price&country.code=PL&limit='+this.pageLimit+this.getPageToken());
         axios.get('https://allegroapi.io/offers?phrase='+text+'&sort=+price&country.code=PL&limit='+this.pageLimit+this.getPageToken(), config)
             .then((response) => {
                 this.setPageToken(response.data.pageToken.next);
-                console.log(response.data.pageToken.next);
-
-
+                //console.log(response.data.pageToken.next);
             });
     }
  }
