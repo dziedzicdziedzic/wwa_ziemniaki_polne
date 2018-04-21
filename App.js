@@ -13,7 +13,7 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
           <SearchField/>
-          <ListOfSearchedItems/>
+          <ListOfSearchedItems style={styles.list}/>
       </View>
     );
   }
@@ -24,8 +24,13 @@ export default class App extends React.Component {
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#ef7e14',
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'column',
   },
+  list:{
+    marginLeft: 18,
+    marginRight: 18,
+  }
 });

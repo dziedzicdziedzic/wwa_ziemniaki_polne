@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, TextInput, TouchableOpacity, Image} from 'react-native';
+import {StyleSheet, Text, View, TextInput, TouchableOpacity, Image, Linking} from 'react-native';
 
 
 
@@ -20,44 +20,69 @@ export default class SingleItem extends React.Component {
      }
 
      */
+    handleClick = (url) => {
+        Linking.canOpenURL(url).then(supported => {
+            if (supported) {
+                Linking.openURL(url);
+            } else {
+                console.log("Don't know how to open URI: " + url);
+            }
+        });
+    };
 
     render(){
-        return(
-            <View style={styles.itemContainer}>
-                <View>
-                <Image
-                    style={styles.itemImage}
-                    source={{uri: this.props.item.item.images[0].url}}
-                />
-                </View>
+            if (typeof this.props.item.item.prices.buyNow !== 'undefined'){
+            return(<TouchableOpacity onPress={()=>this.handleClick(this.props.item.item.url)} style={styles.itemContainer}>
+                    <View>
+                        <Image
+                            style={styles.itemImage}
+                            source={{uri: this.props.item.item.images[0].url}}
+                        />
+                    </View>
 
-                <Text style={styles.itemName}>
-                    {this.props.item.item.name}
-                </Text>
-                <Text>
-                    {this.props.item.item.prices.buyNow.amount}
-                </Text>
-            </View>
-        );
+                    <Text  numberOfLines={1} style={styles.itemName}>
+                        {this.props.item.item.name}
+                    </Text>
+                    <Text style={styles.itemPrice}>
+                        {this.props.item.item.prices.buyNow.amount}
+                    </Text>
+                </TouchableOpacity>);
+            }else {return null;}
+
     }
 
 }
 
 const styles = StyleSheet.create({
     itemContainer: {
-        width:200,
-        height: 100,
+        height: 60,
         display: 'flex',
-        backgroundColor: 'transparent',
-        flexDirection: 'row'
+        borderRadius: 10,
+        backgroundColor: '#c06614',
+        flexDirection: 'row',
+        overflow: 'hidden',
+        alignItems: 'stretch',
+        marginTop: 5,
+        width: 340,
+        opacity: 0.95,
     },
     itemImage:{
-        width:50,
-        height:100,
+        width:60,
+        height:60,
     },
     itemName: {
-        width: 50,
-        height:100,
-        backgroundColor: 'blue'
+        height:60,
+        lineHeight: 60,
+        flex:1,
+
+        backgroundColor:'white',
+    },
+    itemPrice:{
+        lineHeight: 60,
+        fontSize: 22,
+        backgroundColor:'white',
+        paddingLeft: 10,
+        paddingRight: 10,
     }
+
 });

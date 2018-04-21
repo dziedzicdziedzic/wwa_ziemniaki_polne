@@ -23,6 +23,7 @@ export default class ListOfSearchedItems extends React.Component {
 
 
 
+
     mySubscriber(msg,data){
 
         this.setState({itemDatabase: JSON.parse(data)});
@@ -38,6 +39,7 @@ export default class ListOfSearchedItems extends React.Component {
                    data={this.state.itemDatabase}
                    renderItem={this.renderItem}
                    keyExtractor={this.getItemKey}
+                   onEndReached={}
                />
            )
     }

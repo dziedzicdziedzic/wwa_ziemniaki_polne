@@ -34,8 +34,8 @@ class Requests {
                 'Accept': Config.accept(),
             }
         };
-        console.log('https://allegroapi.io/offers?phrase='+text+'&sort=+price&country.code=PL&limit='+this.pageLimit);
-        axios.get('https://allegroapi.io/offers?phrase='+text+'&sort=+price&country.code=PL&limit='+this.pageLimit, config)
+        console.log('https://allegroapi.io/offers?phrase='+text+'&sort=&country.code=PL&limit='+this.pageLimit);
+        axios.get('https://allegroapi.io/offers?phrase='+text+'&sort=+date&country.code=PL&limit='+this.pageLimit, config)
             .then((response) => {
             this.setPageToken(response.data.pageToken.next);
             console.log(response.data.pageToken.next);
