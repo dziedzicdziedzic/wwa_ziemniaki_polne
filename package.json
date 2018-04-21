@@ -4,8 +4,10 @@
   "dependencies": {
     "axios": "^0.18.0",
     "expo": "^26.0.0",
+    "node-gyp": "^3.6.2",
     "react": "16.3.0-alpha.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-26.0.0.tar.gz",
+    "react-native-tensorflow": "^0.1.6",
     "redux": "^4.0.0"
   },
   "devDependencies": {

@@ -1,105 +1,153 @@
-import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { FileSystem, Permissions, Camera } from 'expo';
-import PubSub from 'pubsub-js';
-import Requests from '../services/Requests';
+import React from "react";
+import { Camera, Permissions, FileSystem } from "expo";
+import { Ionicons, Feather } from "@expo/vector-icons";
+import { View, StatusBar, TouchableOpacity, StyleSheet } from "react-native";
 
 export default class BarCodeReader extends React.Component {
     state = {
         type: Camera.Constants.Type.back,
-        hasCameraPermission: false,
-        gallery:[],
+        permissionsGranted: false,
+        zoom: 0,
         barcode:{
             type:'',
-            data:'',
-        }
-    }
+            dara:''
+        },
 
-    async componentDidMount() {
+
+    };
+
+    componentDidMount() {
         Permissions.askAsync(Permissions.CAMERA).then(this.handlePermissionStatus);
-        const gallery = await Expo.FileSystem.readDirectoryAsync(FileSystem.documentDirectory + 'photos/');
-        this.setState({
-            gallery: gallery
-        });
-        console.log(gallery);
-        FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'photos').catch(e => {
+        FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'p').catch(e => {
             return;// wtv, dir probably exists
         });
+
     }
 
-    async componentWillMount() {
-        const { status } = await Permissions.askAsync(Permissions.CAMERA);
-        this.setState({hasCameraPermission: status === 'granted'});
-    }
+    handlePermissionStatus = ({ status }) =>
+        this.setState({
+            permissionsGranted: status === "granted"
+        });
 
     capturePhoto = async () => {
         if (this.camera) {
             const photo = await this.camera.takePictureAsync();
             await FileSystem.moveAsync({
                 from: photo.uri,
-                to: `${FileSystem.documentDirectory}photos/Photo_${Date.now()}.jpg`
+                to: `${FileSystem.documentDirectory}photos/photo.jpg`
+
             });
-            console.log('robiesezdjecie');
+
         }
     };
 
-
-
-    render() {
-        const { hasCameraPermission } = this.state;
-
-        if (hasCameraPermission === null) {
-            return <Text>Requesting for camera permission</Text>;
-        } else if (hasCameraPermission === false) {
-            return <Text>No access to camera</Text>;
-        } else {
-            return (
-                <View style={styles.container}>
-                    <Camera
-                        onBarCodeRead={this.handleBarCodeRead}
-                        style={styles.barcode}
-                    >
-
-                        <TouchableOpacity
-                            onPress={this.capturePhoto}
-                            style={styles.captureButtonWrapper}
-                            hitSlop={{ top: 16, left: 16, right: 16, bottom: 16 }}
-                        >
-                            <View style={styles.captureButton} />
-                        </TouchableOpacity>
-                    </Camera>
-                    <TouchableOpacity
-                    onPress = {()=>Requests.searchISBNRequest(this.state.barcode.data)}
-                    style = {styles.button}
-                    >
-                        <Text>
-                            Search
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-            );
-        }
-    }
-
-    handleBarCodeRead = ({ type, data }) => {
+    setBarCode = ({type, data}) => {
         const barcode = Object.assign({}, this.state.barcode, {
             type: type,
             data: data
         });
         this.setState({barcode});
+    };
+
+
+    dismiss = () => this.props.navigation.goBack();
+
+
+    renderBlackScreen = () => <View style={styles.placeholder} />;
+
+
+    renderCamera = () => (
+        <Camera
+            style={styles.camera}
+            ref={ ref => this.camera = ref }
+            ratio="16:9"
+            type={this.state.type}
+            zoom={this.state.zoom}
+            onBarCodeRead={this.setBarCode}
+        >
+            <StatusBar hidden animated barStyle="dark-content" />
+            <TouchableOpacity
+                onPress={this.dismiss}
+                style={styles.closeButton}
+                hitSlop={{ top: 16, left: 16, right: 16, bottom: 16 }}
+            >
+                <Ionicons name="md-close" size={32} color="white" />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                style={styles.closeButton}
+                onPress={() => {
+                    this.setState({
+                        type: this.state.type === Camera.Constants.Type.back ? Camera.Constants.Type.front : Camera.Constants.Type.back,
+                    });
+                }}>
+                <Ionicons name="ios-switch" size={32} color="white" />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                style={styles.closeButton}
+                onPress={() => {
+                    this.setState({
+                        zoom: this.state.zoom + 0.3,
+                    });
+                }}>
+                <Feather name="plus-square" size={32} color="white" />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                style={styles.closeButton}
+                onPress={() => {
+                    this.setState({
+                        zoom: this.state.zoom - 0.3,
+                    });
+                }}>
+                <Feather name="minus-square" size={32} color="white" />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                onPress={this.capturePhoto}
+                style={styles.captureButtonWrapper}
+                hitSlop={{ top: 16, left: 16, right: 16, bottom: 16 }}
+            >
+                <View style={styles.captureButton} />
+            </TouchableOpacity>
+        </Camera>
+    );
+
+    render() {
+        const screenComponent = this.state.permissionsGranted
+            ? this.renderCamera()
+            : this.renderBlackScreen();
+        return (
+            <View style={{ flex: 1, alignItems: "stretch" }}>{screenComponent}</View>
+        );
     }
 }
+
 const styles = StyleSheet.create({
-    container: {
-        //flexDirection: 'column',
+    placeholder: { flex: 1, backgroundColor: "black" },
+    camera: {
         flex: 1,
+        flexDirection: "column",
+        justifyContent: "space-between",
+        alignItems: "center"
     },
-    barcode:{
-        flex:5,
+    closeButton: {
+        marginRight: 16,
+        marginTop: 16,
+        alignSelf: "flex-end"
     },
-    button:{
-        flex: 3,
-        padding: 30,
+    captureButtonWrapper: {
+        marginRight: 16,
+        marginTop: 16,
+        borderColor: "white",
+        borderWidth: 2,
+        width: 64,
+        height: 64,
+        borderRadius: 64,
+        marginBottom: 16,
+        alignItems: "center",
+        justifyContent: "center"
     },
     captureButton: {
         backgroundColor: "white",
@@ -107,5 +155,4 @@ const styles = StyleSheet.create({
         height: 52,
         borderRadius: 52
     }
-    }
-);
+});
