@@ -38,9 +38,6 @@ class Requests {
     }
 
     setPageToken(token){
-        if (token !== this.pageToken){
-            //console.log("różny");
-        }
         this.pageToken = token
     }
 
