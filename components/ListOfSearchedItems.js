@@ -1,21 +1,37 @@
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { FlatList, StyleSheet } from "react-native";
-import { SingleItem } from "components";
-import {SearchField} from "components";
+import { FlatList, StyleSheet, View } from "react-native";
+import {PubSub} from 'pubsub-js';
+import SingleItem from "./SingleItem";
 
-class ListOfSearchedItems extends React.Component {
 
-   state={
-        itemDatabase:[],
-    };
+export default class ListOfSearchedItems extends React.Component {
+
+    constructor(props){
+        super(props)
+        this.state= {
+            itemDatabase: [],
+
+        }
+        this.mySubscriber = this.mySubscriber.bind(this)
+        this.componentWillMount = this.componentWillMount.bind(this)
+    }
+
+    componentWillMount(){
+        this.token = PubSub.subscribe("RESPONSE", this.mySubscriber)
+    }
+
+
+
+    mySubscriber(msg,data){
+        this.setState({itemDatabase: data});
+    }
 
     renderItem = (item) => <SingleItem item={item}/>;
 
-    getItemKey = (item) => item;
+    getItemKey = (item) => item.id;
 
     render(){
-       if(SearchField.state.searchedHasBeenClicked){
            return(
                <FlatList
                    data={this.state.itemDatabase}
@@ -23,16 +39,7 @@ class ListOfSearchedItems extends React.Component {
                    keyExtractor={this.getItemKey}
                />
            )
-       }else{
-           <View>
-               <Text>
-                   Nic tu nie ma, bo byc nie powinno.
-               </Text>
-           </View>
-       }
     }
-
-
 
 
 }

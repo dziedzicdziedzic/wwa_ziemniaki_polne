@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
-import Requests from '../services/Requests';
+import {StyleSheet, Text, View, TextInput, TouchableOpacity, Image} from 'react-native';
 
 
 
-class SingleItem extends React.Component {
+export default class SingleItem extends React.Component {
 
     /*
     props: item

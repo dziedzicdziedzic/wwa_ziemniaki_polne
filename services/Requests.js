@@ -1,10 +1,16 @@
 import axios from 'axios';
+import redux from 'redux';
 import Config from '../config'
+import ListOfSearchedItems from '../components/ListOfSearchedItems';
+import {PubSub} from 'pubsub-js';
+
+
 class Requests {
 
     constructor(){
         this.pageToken = null;
         this.pageLimit = 1;
+
     }
 
     getPageToken(){
@@ -33,9 +39,14 @@ class Requests {
             .then((response) => {
             this.setPageToken(response.data.pageToken.next);
             console.log(response.data.pageToken.next);
+            //ListOfSearchedItems.Change(response.data.offers);
+            PubSub.publish("RESPONSE",response.data.offers);
+
+
         });
     }
-    
+
+
     searchMore(text){
         var config = {
             headers: {
@@ -49,6 +60,7 @@ class Requests {
             .then((response) => {
                 this.setPageToken(response.data.pageToken.next);
                 console.log(response.data.pageToken.next);
+
 
             });
     }
