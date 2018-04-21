@@ -24,10 +24,28 @@ export default class ListOfSearchedItems extends React.Component {
 
     mySubscriber(msg,data){
         this.setState({itemDatabase: JSON.parse(data)});
+        this.refs.listRef.scrollToOffset({y: 0, animated: false})
+
     }
 
     mySubscriber2(msg,data){
-        this.setState({itemDatabase: this.state.itemDatabase.concat(JSON.parse(data))});
+        var data2 = JSON.parse(data);
+        console.log(data2);
+        //data3 = data2.filter((el)=>!this.state.itemDatabase.includes(el));
+        var data3 = [];
+        for (let el of  data2){
+            var add = true;
+            for (let el2 of this.state.itemDatabase){
+                if (el.id === el2.id){
+                    add = false;
+                }
+            }
+            if (add){
+                data3.push(el);
+            }
+        }
+        console.log(data3);
+        this.setState({itemDatabase: this.state.itemDatabase.concat(data3)});
     }
 
     askForNewEntries(){
@@ -44,6 +62,7 @@ export default class ListOfSearchedItems extends React.Component {
                    renderItem={this.renderItem}
                    keyExtractor={this.getItemKey}
                    onEndReached={()=>{if(this.state.itemDatabase.length>0){this.askForNewEntries()}}}
+                   ref="listRef"
                />
            )
     }
