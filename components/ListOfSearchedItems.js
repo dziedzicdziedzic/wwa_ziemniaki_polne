@@ -11,7 +11,6 @@ export default class ListOfSearchedItems extends React.Component {
         super(props)
         this.state= {
             itemDatabase: [],
-
         }
         this.mySubscriber = this.mySubscriber.bind(this)
         this.componentWillMount = this.componentWillMount.bind(this)
@@ -21,11 +20,7 @@ export default class ListOfSearchedItems extends React.Component {
         this.token = PubSub.subscribe("RESPONSE", this.mySubscriber)
     }
 
-
-
-
     mySubscriber(msg,data){
-
         this.setState({itemDatabase: JSON.parse(data)});
     }
 
