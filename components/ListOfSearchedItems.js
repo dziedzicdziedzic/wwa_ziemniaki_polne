@@ -24,7 +24,8 @@ export default class ListOfSearchedItems extends React.Component {
 
 
     mySubscriber(msg,data){
-        this.setState({itemDatabase: data});
+
+        this.setState({itemDatabase: JSON.parse(data)});
     }
 
     renderItem = (item) => <SingleItem item={item}/>;
