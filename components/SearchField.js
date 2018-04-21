@@ -1,12 +1,10 @@
 import React, {Component} from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
 import Requests from '../services/Requests';
-import Config from '../config';
 
-class SearchField extends React.Component {
+export default class SearchField extends React.Component {
     state = {
         searchedPhrase:" ",
-        searchedHasBeenClicked: false,
     }
     render() {
         return (
@@ -16,14 +14,12 @@ class SearchField extends React.Component {
                 </View>
         );
     }
-    searchPhrase = ()=> {
+    searchPhrase = () => {
         Requests.searchRequest(this.state.searchedPhrase);
-        this.setState({searchedHasBeenClicked: true})
     }
 
 
 }
-export default SearchField;
 
 var styles = StyleSheet.create({
     searchField:{
