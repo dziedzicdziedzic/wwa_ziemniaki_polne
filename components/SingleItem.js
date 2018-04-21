@@ -25,22 +25,17 @@ export default class SingleItem extends React.Component {
         return(
             <View style={styles.itemContainer}>
                 <View>
-                    <Image
-                        style={styles.mainImage}
-                        source={{ uri: this.props.item.images[0].url }}
-                    />
+                <Image
+                    style={styles.itemImage}
+                    source={{uri: this.props.item.item.images[0].url}}
+                />
                 </View>
+
                 <Text style={styles.itemName}>
-                    Jestem nazwa przedmiotu /*tutaj trzeba wstawic nazwe z propsow*/
-                    {this.props.item.name}
+                    {this.props.item.item.name}
                 </Text>
-                {/*<Text style={styles.itemName}>
-                    informuje o stanie /*tutaj trzeba wstawic stan z propsow*/
-                    /*{{this.props.item.state}}
-                </Text>*/}
-                <Text style={styles.itemName}>
-                    informuję o cenie /*tutaj trzeba wstawic cene z propsow*/
-                    {this.props.item.prices.buyNow.amount}
+                <Text>
+                    {this.props.item.item.prices.buyNow.amount}
                 </Text>
             </View>
         );
@@ -50,16 +45,19 @@ export default class SingleItem extends React.Component {
 
 const styles = StyleSheet.create({
     itemContainer: {
-        width: 50,
-        height: 50,
-        backgroundColor: 'grey',
+        width:200,
+        height: 100,
+        display: 'flex',
+        backgroundColor: 'transparent',
         flexDirection: 'row'
     },
-    mainImage:{
-        flex: 2,
+    itemImage:{
+        width:50,
+        height:100,
     },
     itemName: {
-        flex: 7,
+        width: 50,
+        height:100,
         backgroundColor: 'blue'
     }
 });

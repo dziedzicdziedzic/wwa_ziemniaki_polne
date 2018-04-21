@@ -9,7 +9,7 @@ class Requests {
 
     constructor(){
         this.pageToken = null;
-        this.pageLimit = 1;
+        this.pageLimit = 20;
 
     }
 
@@ -40,7 +40,8 @@ class Requests {
             this.setPageToken(response.data.pageToken.next);
             console.log(response.data.pageToken.next);
             //ListOfSearchedItems.Change(response.data.offers);
-            PubSub.publish("RESPONSE",response.data.offers);
+
+            PubSub.publish("RESPONSE",JSON.stringify(response.data.offers));
 
 
         });
