@@ -23,14 +23,14 @@ export default class ListOfSearchedItems extends React.Component {
     }
 
     mySubscriber(msg,data){
+        console.log(JSON.parse(data));
         this.setState({itemDatabase: JSON.parse(data)});
-        this.refs.listRef.scrollToOffset({y: 0, animated: false})
 
     }
 
     mySubscriber2(msg,data){
         var data2 = JSON.parse(data);
-        console.log(data2);
+        //console.log(data2);
         //data3 = data2.filter((el)=>!this.state.itemDatabase.includes(el));
         var data3 = [];
         for (let el of  data2){

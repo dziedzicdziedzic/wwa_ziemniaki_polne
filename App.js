@@ -1,35 +1,29 @@
 import React from 'react';
-import {createStore} from 'redux';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
-import SearchField  from './components/SearchField';
 import BarCodeReader from './components/BarCodeReader';
-import ListOfSearchedItems from './components/ListOfSearchedItems'
-import {BarCodeScanner} from 'expo';
-import Predicter from './components/Predicter'
+import HomeScreen from "./HomeScreen";
+import {StackNavigator} from "react-navigation";
 
+const RootStack = StackNavigator(
+    {
+        Home: {
+            screen: HomeScreen,
+        },
+        BarCode: {
+            screen: BarCodeReader,
+        },
+    },
+    {
+        initialRouteName: 'BarCode',
+        header: 'none',
+        mode: 'modal',
+        navigationOptions: {
+            header: null,
+        },
+    }
+);
 
 export default class App extends React.Component {
-
-
-  render() {
-    return (
-        <Predicter/>
-    );
-  }
+    render() {
+        return( <RootStack/>);
+    }
 }
-
-
-
-var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ef7e14',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
-  },
-  list:{
-    marginLeft: 18,
-    marginRight: 18,
-  }
-});

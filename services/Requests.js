@@ -12,17 +12,26 @@ class Requests {
         this.pageLimit = 20;
         this.requestPending = false;
         this.mySubscriber = this.mySubscriber.bind(this);
+        this.mySubscriber2 = this.mySubscriber2.bind(this);
         this.lastSearchedText = "";
         this.token = PubSub.subscribe("ASK", this.mySubscriber);
+        this.token2 = PubSub.subscribe("PHOTO", this.mySubscriber2);
 
     }
     componentWillMount(){
         this.token = PubSub.subscribe("ASK", this.mySubscriber)
+        this.token2 = PubSub.subscribe("PHOTO", this.mySubscriber2);
+
     }
 
     mySubscriber(msg,data){
         //console.log("ask2");
         this.searchMore()
+    }
+
+    mySubscriber2(msg,data){
+        //console.log("ask2");
+        this.searchISBNRequest(data)
     }
 
     getPageToken(){
@@ -82,7 +91,7 @@ class Requests {
     }
 
 
-    searchMore(text) {
+    searchMore() {
         var config = {
             headers: {
                 'Api-Key': Config.api_key(),
